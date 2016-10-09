@@ -1,17 +1,25 @@
-require "Yaci"
-require "Tools"
+local classes = require "classes"
+local Tools = require "Tools"
 
-Roller = newclass("Roller")
+local Roller = classes.class()
 
 function Roller:init(name, engineUp, engineDown, timeToOpen, timeToClose)
-    self.engineUp = cluName .. "->" .. engineUp .. "->"
-    self.engineDown = cluName .. "->" .. engineDown .. "->"
+    self.engineUp = Tools.cluName .. "->" .. engineUp .. "->"
+    self.engineDown = Tools.cluName .. "->" .. engineDown .. "->"
     self.name = name
     self.status = "stopped"
-    self.position = false
+    self.position = nil
     self.timeToOpen = timeToOpen
     self.timeToClose = timeToClose
     self.startedAt = 0
+end
+
+function Roller:open()
+    self:setPosition(1)
+end
+
+function Roller:close()
+    self:setPosition(0)
 end
 
 function Roller:setPosition(newPosition)
@@ -21,14 +29,12 @@ function Roller:setPosition(newPosition)
 
     -- in case position is unknown (system restart)
     if self.position == nil then
-        if newPosition == 1 then
+        if newPosition > 0.5 then
+            newPosition = 1 -- open fully
             self.position = 0
-        elseif newPosition == 0 then
+        elseif newPosition <= 0.5 then
+            newPosition = 0 -- close fully
             self.position = 1
-        else
-            -- dont know exact position of roller, so cant move it to other exact position
-            newPosition = 1 -- so just opening
-            self.position = 0
         end
     end
 
@@ -37,48 +43,48 @@ function Roller:setPosition(newPosition)
         if diff == 0 then
             return
         elseif diff > 0 then
-            if loadstring(engineUp .. "Value()") == 1 then
+            if Tools.execute(self.engineUp .. "Value()") == 1 then
                 error("Cannot close roller while it is opening!")
             end
             self.status = "closing"
-            Tools.log("closing")
-            self.startedAt = Tools:getCurrentTime()
-            loadstring(engineDown .. "SwitchOn(" .. diff * self.timeToClose .. ")")
+            self.startedAt = Tools.getCurrentTimeMs()
+            Tools.execute(self.engineDown .. "SwitchOn(" .. diff * self.timeToClose .. ")")
         else
-            if loadstring(engineDown .. "Value()") == 1 then
+            if Tools.execute(self.engineDown .. "Value()") == 1 then
                 error("Cannot open roller while it is closing!")
             end
             self.status = "opening"
-            Tools.log("opening")
-            self.startedAt = Tools:getCurrentTime()
-            loadstring(engineUp .. "SwitchOn(" .. diff * self.timeToOpen .. ")")
+            self.startedAt = Tools.getCurrentTimeMs()
+            Tools.execute(self.engineUp .. "SwitchOn(" .. math.abs(diff) * self.timeToOpen .. ")")
         end
     else
-        self.stop()
+        self:stop()
     end
-    return nil
-end
-
-function Roller:open()
-    self.setPosition(1)
-end
-
-function Roller:close()
-    self.setPosition(0)
 end
 
 function Roller:stop()
-    loadstring(engineUp .. "SwitchOff(0)")
-    loadstring(engineDown .. "SwitchOff(0)")
-    --self.status = "stopped"
+    Tools.execute(self.engineUp .. "SwitchOff(0)")
+    Tools.execute(self.engineDown .. "SwitchOff(0)")
 end
 
 function Roller:onStopped()
-    local timeDiff = Tools:getCurrentTime() - self.startedAt
+    local timeDiff = Tools.getCurrentTimeMs() - self.startedAt
     if self.status == "opening" then
-        self.position = self.position + timeDiff/self.timeToOpen
+        if timeDiff > self.timeToOpen then
+            timeDiff = self.timeToOpen
+        end
+        self.position = self.position + timeDiff / self.timeToOpen
+        if self.position > 1 then
+            self.position = 1
+        end
     elseif self.status == "closing" then
-        self.position = self.position - timeDiff/self.timeToClose
+        if timeDiff > self.timeToClose then
+            timeDiff = self.timeToClose
+        end
+        self.position = self.position - timeDiff / self.timeToClose
+        if self.position < 0 then
+            self.position = 0
+        end
     else
         error("Stopped while already was stopped.")
     end
@@ -93,3 +99,5 @@ end
 function Roller:__tostring()
     return self.name
 end
+
+return Roller
