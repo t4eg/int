@@ -1,10 +1,11 @@
-Grenton = Grenton()
 Classes = Classes()
+CLU = CLU()
+DOUT = DOUT()
 Tools = Tools()
 Roller = Roller()
 
-
-
+CLU.clearLog()
+--DOUT_2654
 
 -- clu->x200000632_DOUT3->Value --Value
 -- clu->x200000632_DOUT3->SetValue(0) --SetValue

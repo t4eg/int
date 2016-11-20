@@ -4,12 +4,10 @@ function Tools() return require "Tools" end
 
 function Roller() return require "Roller" end
 
-function Grenton() return require "Grenton" end
+function CLU() return require "CLU" end
 
+function DOUT() return require "DOUT" end
 
+require "_reference"
 
-
-
-
-
-Main = require "Main"
+require "Main"
