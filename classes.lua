@@ -1,4 +1,4 @@
---- classes.lua
+--- Classes.lua
 --
 -- The classes library enables simple OOP constructs using prototypes and meta-tables.
 --

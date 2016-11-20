@@ -1,7 +1,4 @@
-local classes = require "classes"
-local Tools = require "Tools"
-
-local Roller = classes.class()
+local Roller = Classes.class()
 
 function Roller:init(name, engineUp, engineDown, timeToOpen, timeToClose)
     self.engineUp = Tools.cluName .. "->" .. engineUp .. "->"
