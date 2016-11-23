@@ -6,4 +6,9 @@ function CLU.clearLog()
     CLU_REF.execute(1)
 end
 
+function CLU.log(txt)
+    CLU_REF.execute(0, txt)
+    --TODO:
+end
+
 return CLU

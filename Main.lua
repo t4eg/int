@@ -4,18 +4,14 @@ DOUT = DOUT()
 Tools = Tools()
 Roller = Roller()
 
-CLU.clearLog()
---DOUT_2654
+kotlownia_roller_up = DOUT.new(DOUT_6711)
+kotlownia_roller_up:getValue()
 
--- clu->x200000632_DOUT3->Value --Value
--- clu->x200000632_DOUT3->SetValue(0) --SetValue
--- clu->x200000632_DOUT3->Switch(0) --switch
--- clu->x200000632_DOUT3->SwitchOn(0) --SwitchOn
--- clu->x200000632_DOUT3->SwitchOff(0) --SwitchOff
+kotlownia_roller_down = DOUT.new(DOUT_2651)
+kotlownia_roller_down:setValue(432)
 
 
-
---kotlowniaRoller = Roller.new("kotlownia_roller", "kotlownia_roller_up", "kotlownia_roller_down", 2000, 500)
+--kotlowniaRoller = Roller.new("kotlownia_roller", kotlownia_roller_up, kotlownia_roller_down, 2000, 500)
 
 
 --kotlowniaRoller:open()

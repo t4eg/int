@@ -1,5 +1,3 @@
-
-
 local Tools = Classes.class()
 
 Tools.cluName = "clu"
@@ -9,13 +7,7 @@ function Tools.getCurrentTimeMs()
     return os.clock() * 1000
 end
 
-function Tools.log(txt)
-    if Tools.isLocal then
-        print(txt)
-    else
-        --loadstring("clu->AddToLog(txt)")
-    end
-end
+
 
 function Tools.execute(str)
     if Tools.isLocal then
