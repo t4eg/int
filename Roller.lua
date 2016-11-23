@@ -1,14 +1,16 @@
 local Roller = Classes.class()
 
 function Roller:init(name, engineUp, engineDown, timeToOpen, timeToClose)
-    self.engineUp = Tools.cluName .. "->" .. engineUp .. "->"
-    self.engineDown = Tools.cluName .. "->" .. engineDown .. "->"
     self.name = name
+    self.engineUp = engineUp
+    self.engineDown = engineDown
     self.status = "stopped"
     self.position = nil
     self.timeToOpen = timeToOpen
     self.timeToClose = timeToClose
     self.startedAt = 0
+
+    -- TODO: dodac wywolanie metody onStopped
 end
 
 function Roller:open()
@@ -40,19 +42,19 @@ function Roller:setPosition(newPosition)
         if diff == 0 then
             return
         elseif diff > 0 then
-            if Tools.execute(self.engineUp .. "Value") == 1 then
+            if self.engineUp:getValue() == 1 then
                 error("Cannot close roller while it is opening!")
             end
             self.status = "closing"
             self.startedAt = Tools.getCurrentTimeMs()
-            Tools.execute(self.engineDown .. "SwitchOn(" .. diff * self.timeToClose .. ")")
+            self.engineDown:switchOn(diff * self.timeToClose)
         else
-            if Tools.execute(self.engineDown .. "Value") == 1 then
+            if self.engineDown:getValue() == 1 then
                 error("Cannot open roller while it is closing!")
             end
             self.status = "opening"
             self.startedAt = Tools.getCurrentTimeMs()
-            Tools.execute(self.engineUp .. "SwitchOn(" .. math.abs(diff) * self.timeToOpen .. ")")
+            self.engineUp:switchOn(math.abs(diff) * self.timeToOpen)
         end
     else
         self:stop()
@@ -60,8 +62,8 @@ function Roller:setPosition(newPosition)
 end
 
 function Roller:stop()
-    Tools.execute(self.engineUp .. "SwitchOff(0)")
-    Tools.execute(self.engineDown .. "SwitchOff(0)")
+    self.engineUp:switchOff()
+    self.engineDown:switchOff()
 end
 
 function Roller:onStopped()

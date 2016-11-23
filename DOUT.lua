@@ -17,11 +17,11 @@ function DOUT:switch()
 end
 
 function DOUT:switchOn(val)
-    self.dout_ref:execute(1, 0)
+    self.dout_ref:execute(1, val)
 end
 
 function DOUT:switchOff(val)
-    self.dout_ref:execute(2, 0)
+    self.dout_ref:execute(2, val)
 end
 
 return DOUT
