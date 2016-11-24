@@ -3,12 +3,16 @@ local CLU = Classes.class()
 local CLU_REF = CLU_0d1cf0d6
 
 function CLU.clearLog()
-    CLU_REF.execute(1)
+    CLU_REF:execute(1)
 end
 
 function CLU.log(txt)
-    CLU_REF.execute(0, txt)
+    CLU_REF:execute(0, txt)
     --TODO:
+end
+
+function CLU.getUnixTime()
+    CLU_REF:get(13)
 end
 
 return CLU

@@ -24,4 +24,16 @@ function DOUT:switchOff(val)
     self.dout_ref:execute(2, val)
 end
 
+function DOUT:onChange(f)
+    self.dout_ref:add_event(0, f)
+end
+
+function DOUT:onSwitchOn(f)
+    self.dout_ref:add_event(1, f)
+end
+
+function DOUT:onSwitchOff(f)
+    self.dout_ref:add_event(2, f)
+end
+
 return DOUT

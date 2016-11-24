@@ -9,8 +9,8 @@ function Roller:init(name, engineUp, engineDown, timeToOpen, timeToClose)
     self.timeToOpen = timeToOpen
     self.timeToClose = timeToClose
     self.startedAt = 0
-
-    -- TODO: dodac wywolanie metody onStopped
+    self.engineUp:onSwitchOff(function() self:onStopped() end)
+    self.engineDown:onSwitchOff(function() self:onStopped() end)
 end
 
 function Roller:open()
