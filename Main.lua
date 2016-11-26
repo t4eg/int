@@ -4,20 +4,16 @@ DOUT = DOUT()
 Tools = Tools()
 Roller = Roller()
 
-kotlownia_roller_up = DOUT.new(DOUT_6711)
-kotlownia_roller_up:getValue()
+kotlownia_roller_open = DOUT.new(DOUT_8076)
+kotlownia_roller_close = DOUT.new(DOUT_6711)
+kotlowniaRoller = Roller.new("kotlownia_roller", kotlownia_roller_open, kotlownia_roller_close, 2000, 500)
 
-kotlownia_roller_down = DOUT.new(DOUT_2651)
-kotlownia_roller_down:setValue(432)
+Tools.sleep(1)
 
-
-kotlowniaRoller = Roller.new("kotlownia_roller", kotlownia_roller_up, kotlownia_roller_down, 2000, 500)
-
-
---kotlowniaRoller:open()
+kotlowniaRoller:open()
 
 
---Tools.sleep(4)
+Tools.sleep(4)
 
---kotlowniaRoller:close()
+kotlowniaRoller:close()
 

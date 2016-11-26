@@ -1,16 +1,16 @@
 local Roller = Classes.class()
 
-function Roller:init(name, engineUp, engineDown, timeToOpen, timeToClose)
+function Roller:init(name, engineOpen, engineClose, timeToOpen, timeToClose)
     self.name = name
-    self.engineUp = engineUp
-    self.engineDown = engineDown
+    self.engineOpen = engineOpen
+    self.engineClose = engineClose
     self.status = "stopped"
     self.position = nil
     self.timeToOpen = timeToOpen
     self.timeToClose = timeToClose
     self.startedAt = 0
-    self.engineUp:onSwitchOff(function() self:onStopped() end)
-    self.engineDown:onSwitchOff(function() self:onStopped() end)
+    self.engineOpen:onSwitchOff(function() self:onStoppedOpening() end)
+    self.engineClose:onSwitchOff(function() self:onStoppedClosing() end)
 end
 
 function Roller:open()
@@ -42,19 +42,19 @@ function Roller:setPosition(newPosition)
         if diff == 0 then
             return
         elseif diff > 0 then
-            if self.engineUp:getValue() == 1 then
+            if self.engineOpen:getValue() == 1 then
                 error("Cannot close roller while it is opening!")
             end
             self.status = "closing"
             self.startedAt = Tools.getCurrentTimeMs()
-            self.engineDown:switchOn(diff * self.timeToClose)
+            self.engineClose:switchOn(diff * self.timeToClose)
         else
-            if self.engineDown:getValue() == 1 then
+            if self.engineClose:getValue() == 1 then
                 error("Cannot open roller while it is closing!")
             end
             self.status = "opening"
             self.startedAt = Tools.getCurrentTimeMs()
-            self.engineUp:switchOn(math.abs(diff) * self.timeToOpen)
+            self.engineOpen:switchOn(math.abs(diff) * self.timeToOpen)
         end
     else
         self:stop()
@@ -62,33 +62,34 @@ function Roller:setPosition(newPosition)
 end
 
 function Roller:stop()
-    self.engineUp:switchOff()
-    self.engineDown:switchOff()
+    self.engineOpen:switchOff()
+    self.engineClose:switchOff()
 end
 
-function Roller:onStopped()
+function Roller:onStoppedOpening()
     local timeDiff = Tools.getCurrentTimeMs() - self.startedAt
-    if self.status == "opening" then
-        if timeDiff > self.timeToOpen then
-            timeDiff = self.timeToOpen
-        end
-        self.position = self.position + timeDiff / self.timeToOpen
-        if self.position > 1 then
-            self.position = 1
-        end
-    elseif self.status == "closing" then
-        if timeDiff > self.timeToClose then
-            timeDiff = self.timeToClose
-        end
-        self.position = self.position - timeDiff / self.timeToClose
-        if self.position < 0 then
-            self.position = 0
-        end
-    else
-        error("Stopped while already was stopped.")
+    if timeDiff > self.timeToOpen then
+        timeDiff = self.timeToOpen
+    end
+    self.position = self.position + timeDiff / self.timeToOpen
+    if self.position > 1 then
+        self.position = 1
     end
     self.status = "stopped"
     Tools.log("stopped")
+end
+
+function Roller:onStoppedClosing()
+    local timeDiff = Tools.getCurrentTimeMs() - self.startedAt
+    if timeDiff > self.timeToClose then
+        timeDiff = self.timeToClose
+    end
+    self.position = self.position - timeDiff / self.timeToClose
+    if self.position < 0 then
+        self.position = 0
+    end
+    self.status = "stopped"
+    CLU.log("stopped")
 end
 
 function Roller:getPosition()

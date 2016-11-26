@@ -8,7 +8,6 @@ end
 
 function CLU.log(txt)
     CLU_REF:execute(0, txt)
-    --TODO:
 end
 
 function CLU.getUnixTime()
