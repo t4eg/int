@@ -1,3 +1,5 @@
+local debug = true
+
 function deepcopytable(orig)
     local orig_type = type(orig)
     local copy
@@ -13,15 +15,21 @@ function deepcopytable(orig)
     return copy
 end
 
+local function print2(txt)
+    if debug then
+        print(txt)
+    end
+end
+
 -------------------------------------------------------
 
 CLU_0d1cf0d6 = {}
 
 function CLU_0d1cf0d6.execute(num, val)
     if num == 0 then
-        print("CLU log " .. val)
+        print2("CLU log " .. val)
     elseif num == 1 then
-        print("CLU clear log")
+        print2("CLU clear log")
     end
 end
 
@@ -32,37 +40,37 @@ _DOUT.value = 0
 
 function _DOUT:get(num)
     if num == 0 then
-        print(self.name .. " get value")
+        print2(self.name .. ".getValue() returns " .. _DOUT.value)
         return _DOUT.value
     end
 end
 
 function _DOUT:set(num, val)
     if num == 0 then
-        print(self.name .. " set value " .. val)
+        print2(self.name .. "setValue(" .. val..")")
         _DOUT.value = val;
     end
 end
 
 function _DOUT:execute(num, val)
     if num == 0 then
-        print(self.name .. " switch")
         if _DOUT.value == 0 then
             _DOUT.value = 1
         else
             _DOUT.value = 0
         end
+        print2(self.name .. ".switch() to " .. _DOUT.value)
         if _DOUT.onSwitchF ~= nil then
             _DOUT.onSwitchF()
         end
     elseif num == 1 then
-        print(self.name .. " switchOn")
+        print2(self.name .. ".switchOn()")
         _DOUT.value = 1
         if _DOUT.onSwitchOnF ~= nil then
             _DOUT.onSwitchOnF()
         end
     elseif num == 2 then
-        print(self.name .. " switchOff")
+        print2(self.name .. ".switchOff()")
         _DOUT.value = 0
         if _DOUT.onSwitchOffF ~= nil then
             _DOUT.onSwitchOffF()
