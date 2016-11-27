@@ -42,14 +42,14 @@ function Roller:setPosition(newPosition)
         if diff == 0 then
             return
         elseif diff > 0 then
-            if self.engineOpen:getValue() == 1 then
+            if self.engineOpen:getValue() ~= 0 then
                 error("Cannot close roller while it is opening!")
             end
             self.status = "closing"
             self.startedAt = Tools.getCurrentTimeMs()
             self.engineClose:switchOn(diff * self.timeToClose)
         else
-            if self.engineClose:getValue() == 1 then
+            if self.engineClose:getValue() ~= 0 then
                 error("Cannot open roller while it is closing!")
             end
             self.status = "opening"
@@ -76,7 +76,7 @@ function Roller:onStoppedOpening()
         self.position = 1
     end
     self.status = "stopped"
-    Tools.log("stopped")
+    CLU.log("stopped")
 end
 
 function Roller:onStoppedClosing()

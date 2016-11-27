@@ -44,13 +44,14 @@ function _DOUT:execute(num, val)
             self:execute(2, 0)
         end
     elseif num == 2 then
-        if self.name == nil then print("self.name null") end
-        if val == nil then print("val null") end
-
         print2(self.name .. ".switchOff(" .. val .. ")")
         self.value = 0
         if self.onSwitchOffF ~= nil then
             self.onSwitchOffF()
+        end
+        if val ~= 0 then
+            Tools.sleep(val)
+            self:execute(1, 0)
         end
     end
 end

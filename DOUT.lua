@@ -5,7 +5,7 @@ function DOUT:init(dout_ref)
 end
 
 function DOUT:getValue()
-    self.dout_ref:get(0)
+    return self.dout_ref:get(0)
 end
 
 function DOUT:setValue(val)
