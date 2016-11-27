@@ -47,12 +47,15 @@ end
 
 function _DOUT:set(num, val)
     if num == 0 then
-        print2(self.name .. "setValue(" .. val..")")
+        print2(self.name .. "setValue(" .. val .. ")")
         _DOUT.value = val;
     end
 end
 
 function _DOUT:execute(num, val)
+    if val == nil then
+        val = 0
+    end
     if num == 0 then
         if _DOUT.value == 0 then
             _DOUT.value = 1
@@ -64,13 +67,20 @@ function _DOUT:execute(num, val)
             _DOUT.onSwitchF()
         end
     elseif num == 1 then
-        print2(self.name .. ".switchOn()")
+        print2(self.name .. ".switchOn(" .. val .. ")")
         _DOUT.value = 1
         if _DOUT.onSwitchOnF ~= nil then
             _DOUT.onSwitchOnF()
         end
+        if val ~= 0 then
+            Tools.sleep(val)
+            _DOUT:execute(2,0)
+        end
     elseif num == 2 then
-        print2(self.name .. ".switchOff()")
+        if self.name == nil then print("self.name null") end
+        if val == nil then print("val null") end
+
+        print2(self.name .. ".switchOff(" .. val .. ")")
         _DOUT.value = 0
         if _DOUT.onSwitchOffF ~= nil then
             _DOUT.onSwitchOffF()
