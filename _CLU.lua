@@ -12,4 +12,10 @@ function _CLU:execute(num, val)
     end
 end
 
+function _CLU:get(num)
+    if num == 13 then
+        return os.clock() --time since lua started
+    end
+end
+
 return _CLU

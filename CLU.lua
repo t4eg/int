@@ -11,7 +11,7 @@ function CLU.log(txt)
 end
 
 function CLU.getUnixTime()
-    CLU_REF:get(13)
+    return CLU_REF:get(13)
 end
 
 return CLU
