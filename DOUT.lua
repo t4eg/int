@@ -17,10 +17,16 @@ function DOUT:switch()
 end
 
 function DOUT:switchOn(val)
+    if val == nil then
+        val = 0
+    end
     self.dout_ref:execute(1, val)
 end
 
 function DOUT:switchOff(val)
+    if val == nil then
+        val = 0
+    end
     self.dout_ref:execute(2, val)
 end
 
