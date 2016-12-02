@@ -14,7 +14,7 @@ end
 
 function _DOUT:set(num, val)
     if num == 0 then
-        print2(self.name .. "setValue(" .. val .. ")")
+        print2(self.name .. ".setValue(" .. val .. ")")
         self.value = val;
     end
 end
@@ -30,8 +30,8 @@ function _DOUT:execute(num, val)
             self.value = 0
         end
         print2(self.name .. ".switch() to " .. self.value)
-        if self.onSwitchF ~= nil then
-            self.onSwitchF()
+        if self.OnChange ~= nil then
+            self.OnChange()
         end
     elseif num == 1 then
         print2(self.name .. ".switchOn(" .. val .. ")")
@@ -58,7 +58,7 @@ end
 
 function _DOUT:add_event(num, func)
     if num == 0 then
-        self.onSwitchF = func
+        self.OnChange = func
     elseif num == 1 then
         self.onSwitchOnF = func
     elseif num == 2 then
