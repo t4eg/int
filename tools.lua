@@ -1,7 +1,7 @@
 local Tools = Classes.class()
 
 function Tools.getCurrentTimeMs()
-    return os.clock() * 1000
+    return CLU.getUnixTime() * 1000
 end
 
 function Tools.loadStr(str)

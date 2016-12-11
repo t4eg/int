@@ -3,8 +3,8 @@ local RollerButton = Classes.class()
 function RollerButton:init(buttonUp, buttonDown)
     self.buttonUp = buttonUp
     self.buttonDown = buttonDown
-    self.buttonUp:onXXXXXXXXXX(function() self:onClick("up") end)
-    self.buttonDown:onXXXXXXXXXX(function() self:onClick("down") end)
+    self.buttonUp:onClick(function() self:onClick("up") end)
+    self.buttonDown:onClick(function() self:onClick("down") end)
 end
 
 function RollerButton:setRoller(...)

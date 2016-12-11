@@ -53,6 +53,8 @@ function _DIGITAL_IN:add_event(num, func)
         self.OnLongPress = func
     elseif num == 5 then
         self.OnHold = func
+    elseif num == 6 then
+        self.OnClick = func
     end
 end
 
@@ -89,6 +91,12 @@ end
 function _DIGITAL_IN:hold()
     if self.OnHold ~= nil then
         self.OnHold()
+    end
+end
+
+function _DIGITAL_IN:click()
+    if self.OnClick ~= nil then
+        self.OnClick()
     end
 end
 

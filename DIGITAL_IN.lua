@@ -1,4 +1,4 @@
-local DIGITAL_IN = Classes().class()
+local DIGITAL_IN = Classes.class()
 
 function DIGITAL_IN:init(ref)
     self.ref = ref
@@ -33,27 +33,31 @@ function DIGITAL_IN:setHoldInterval(val)
 end
 
 function DIGITAL_IN:onChange(f)
-    self.dout_ref:add_event(0, f)
+    self.ref:add_event(0, f)
 end
 
 function DIGITAL_IN:onSwitchOn(f)
-    self.dout_ref:add_event(1, f)
+    self.ref:add_event(1, f)
 end
 
 function DIGITAL_IN:onSwitchOff(f)
-    self.dout_ref:add_event(2, f)
+    self.ref:add_event(2, f)
 end
 
 function DIGITAL_IN:onShortPress(f)
-    self.dout_ref:add_event(3, f)
+    self.ref:add_event(3, f)
 end
 
 function DIGITAL_IN:onLongPress(f)
-    self.dout_ref:add_event(4, f)
+    self.ref:add_event(4, f)
 end
 
 function DIGITAL_IN:onHold(f)
-    self.dout_ref:add_event(5, f)
+    self.ref:add_event(5, f)
+end
+
+function DIGITAL_IN:onClick(f)
+    self.ref:add_event(6, f)
 end
 
 return DIGITAL_IN
